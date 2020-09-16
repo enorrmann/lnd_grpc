@@ -1,0 +1,738 @@
+import rpc_pb2 as ln
+import rpc_pb2_grpc as lnrpc
+import grpc
+from google.protobuf.json_format import MessageToJson
+
+
+class LNBitsLightningServicer(lnrpc.LightningServicer):
+    def WalletBalance(self, request, context):
+        """lncli: `walletbalance`
+        WalletBalance returns total unspent outputs(confirmed and unconfirmed), all
+        confirmed unspent outputs and all unconfirmed unspent outputs under control
+        of the wallet.
+        """
+        return ln.WalletBalanceResponse(total_balance=12, confirmed_balance=12, unconfirmed_balance=121233)
+
+    def AddInvoice(self, request, context):
+        """lncli: `addinvoice`
+        AddInvoice attempts to add a new invoice to the invoice database. Any
+        duplicated invoices are rejected, therefore all invoices *must* have a
+        unique payment preimage.
+        """
+        # context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 1")
+        #context.set_details('Method not 1!')
+        print(request)
+        #raise NotImplementedError('Method not 2!')
+        return ln.AddInvoiceResponse(payment_request="hola")
+
+    def ChannelBalance(self, request, context):
+        """lncli: `channelbalance`
+        ChannelBalance returns the total funds available across all open channels
+        in satoshis.
+        """
+        print("ChannelBalance")
+        return ln.ChannelBalanceResponse(balance=111, pending_open_balance=222)
+
+    def GetTransactions(self, request, context):
+        """lncli: `listchaintxns`
+        GetTransactions returns a list describing all the known transactions
+        relevant to the wallet.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 3")
+        context.set_details('Method not 5!')
+        raise NotImplementedError('Method not 6!')
+
+    def EstimateFee(self, request, context):
+        """lncli: `estimatefee`
+        EstimateFee asks the chain backend to estimate the fee rate and total fees
+        for a transaction that pays to multiple specified outputs.
+
+        When using REST, the `AddrToAmount` map type can be set by appending
+        `&AddrToAmount[<address>]=<amount_to_send>` to the URL. Unfortunately this
+        map type doesn't appear in the REST API documentation because of a bug in
+        the grpc-gateway library.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 4")
+        context.set_details('Method not 7!')
+        raise NotImplementedError('Method not 8!')
+
+    def SendCoins(self, request, context):
+        """lncli: `sendcoins`
+        SendCoins executes a request to send coins to a particular address. Unlike
+        SendMany, this RPC call only allows creating a single output at a time. If
+        neither target_conf, or sat_per_byte are set, then the internal wallet will
+        consult its fee model to determine a fee for the default confirmation
+        target.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 5")
+        context.set_details('Method not 9!')
+        raise NotImplementedError('Method not 10!')
+
+    def ListUnspent(self, request, context):
+        """lncli: `listunspent`
+        Deprecated, use walletrpc.ListUnspent instead.
+
+        ListUnspent returns a list of all utxos spendable by the wallet with a
+        number of confirmations between the specified minimum and maximum.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 6")
+        context.set_details('Method not 11!')
+        raise NotImplementedError('Method not 12!')
+
+    def SubscribeTransactions(self, request, context):
+        """
+        SubscribeTransactions creates a uni-directional stream from the server to
+        the client in which any newly discovered transactions relevant to the
+        wallet are sent over.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("SubscribeTransactions 7")
+        context.set_details('Method not 13!')
+        raise NotImplementedError('Method not 14!')
+
+    def SendMany(self, request, context):
+        """lncli: `sendmany`
+        SendMany handles a request for a transaction that creates multiple specified
+        outputs in parallel. If neither target_conf, or sat_per_byte are set, then
+        the internal wallet will consult its fee model to determine a fee for the
+        default confirmation target.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 8")
+        context.set_details('Method not 15!')
+        raise NotImplementedError('Method not 16!')
+
+    def NewAddress(self, request, context):
+        """lncli: `newaddress`
+        NewAddress creates a new address under control of the local wallet.
+        """
+        # context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("NewAddress 9")
+        # context.set_details('Method not 17!') zap call 2
+        return ln.NewAddressResponse(address="dummy")
+
+    def SignMessage(self, request, context):
+        """lncli: `signmessage`
+        SignMessage signs a message with this node's private key. The returned
+        signature string is `zbase32` encoded and pubkey recoverable, meaning that
+        only the message digest and signature are needed for verification.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 10")
+        context.set_details('Method not 19!')
+        raise NotImplementedError('Method not 20!')
+
+    def VerifyMessage(self, request, context):
+        """lncli: `verifymessage`
+        VerifyMessage verifies a signature over a msg. The signature must be
+        zbase32 encoded and signed by an active node in the resident node's
+        channel database. In addition to returning the validity of the signature,
+        VerifyMessage also returns the recovered pubkey from the signature.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 11")
+        context.set_details('Method not 21!')
+        raise NotImplementedError('Method not 22!')
+
+    def ConnectPeer(self, request, context):
+        """lncli: `connect`
+        ConnectPeer attempts to establish a connection to a remote peer. This is at
+        the networking level, and is used for communication between nodes. This is
+        distinct from establishing a channel with a peer.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 12")
+        context.set_details('Method not 23!')
+        raise NotImplementedError('Method not 24!')
+
+    def DisconnectPeer(self, request, context):
+        """lncli: `disconnect`
+        DisconnectPeer attempts to disconnect one peer from another identified by a
+        given pubKey. In the case that we currently have a pending or active channel
+        with the target peer, then this action will be not be allowed.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 13")
+        context.set_details('Method not 25!')
+        raise NotImplementedError('Method not 26!')
+
+    def ListPeers(self, request, context):
+        """lncli: `listpeers`
+        ListPeers returns a verbose listing of all currently active peers.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 14")
+        context.set_details('Method not 27!')
+        raise NotImplementedError('Method not 28!')
+
+    def SubscribePeerEvents(self, request, context):
+        """
+        SubscribePeerEvents creates a uni-directional stream from the server to
+        the client in which any events relevant to the state of peers are sent
+        over. Events include peers going online and offline.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 15")
+        context.set_details('Method not 29!')
+        raise NotImplementedError('Method not 30!')
+
+    def GetInfo(self, request, context):
+        """lncli: `getinfo`
+        GetInfo returns general information concerning the lightning node including
+        it's identity pubkey, alias, the chains it is connected to, and information
+        concerning the number of open+pending channels.
+        """
+        # context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("GetInfo 16")
+        # context.set_details('Method not 31!') zap call 1
+        
+        chain = ln.Chain(chain="bitcoin",network="mainnet")
+
+        return ln.GetInfoResponse(
+            version="LnBits11",
+            commit_hash="assd8sa768d67",
+            identity_pubkey="12987612931k2j3bk12",
+            alias="sd78sd67f87ds",
+            num_pending_channels=0,
+            num_active_channels=0,
+            num_inactive_channels=0,
+            num_peers=0,
+            block_height=6,
+            block_hash="8a8s7sa87687",
+            best_header_timestamp=13,
+            synced_to_chain=1,
+            synced_to_graph=0, 
+            chains = [chain]
+        )
+
+    def GetRecoveryInfo(self, request, context):
+        """* lncli: `getrecoveryinfo`
+        GetRecoveryInfo returns information concerning the recovery mode including
+        whether it's in a recovery mode, whether the recovery is finished, and the
+        progress made so far.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 17")
+        context.set_details('Method not 33!')
+        raise NotImplementedError('Method not 34!')
+
+    def PendingChannels(self, request, context):
+        """TODO(roasbeef): merge with below with bool?
+
+        lncli: `pendingchannels`
+        PendingChannels returns a list of all the channels that are currently
+        considered "pending". A channel is pending if it has finished the funding
+        workflow and is waiting for confirmations for the funding txn, or is in the
+        process of closure, either initiated cooperatively or non-cooperatively.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 18")
+        context.set_details('Method not 35!')
+        raise NotImplementedError('Method not 36!')
+
+    def ListChannels(self, request, context):
+        """lncli: `listchannels`
+        ListChannels returns a description of all the open channels that this node
+        is a participant in.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 19")
+        context.set_details('Method not 37!')
+        raise NotImplementedError('Method not 38!')
+
+    def SubscribeChannelEvents(self, request, context):
+        """
+        SubscribeChannelEvents creates a uni-directional stream from the server to
+        the client in which any updates relevant to the state of the channels are
+        sent over. Events include new active channels, inactive channels, and closed
+        channels.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 20")
+        context.set_details('Method not 39!')
+        raise NotImplementedError('Method not 40!')
+
+    def ClosedChannels(self, request, context):
+        """lncli: `closedchannels`
+        ClosedChannels returns a description of all the closed channels that
+        this node was a participant in.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 21")
+        context.set_details('Method not 41!')
+        raise NotImplementedError('Method not 42!')
+
+    def OpenChannelSync(self, request, context):
+        """
+        OpenChannelSync is a synchronous version of the OpenChannel RPC call. This
+        call is meant to be consumed by clients to the REST proxy. As with all
+        other sync calls, all byte slices are intended to be populated as hex
+        encoded strings.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 22")
+        context.set_details('Method not 43!')
+        raise NotImplementedError('Method not 44!')
+
+    def OpenChannel(self, request, context):
+        """lncli: `openchannel`
+        OpenChannel attempts to open a singly funded channel specified in the
+        request to a remote peer. Users are able to specify a target number of
+        blocks that the funding transaction should be confirmed in, or a manual fee
+        rate to us for the funding transaction. If neither are specified, then a
+        lax block confirmation target is used. Each OpenStatusUpdate will return
+        the pending channel ID of the in-progress channel. Depending on the
+        arguments specified in the OpenChannelRequest, this pending channel ID can
+        then be used to manually progress the channel funding flow.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 23")
+        context.set_details('Method not 45!')
+        raise NotImplementedError('Method not 46!')
+
+    def FundingStateStep(self, request, context):
+        """
+        FundingStateStep is an advanced funding related call that allows the caller
+        to either execute some preparatory steps for a funding workflow, or
+        manually progress a funding workflow. The primary way a funding flow is
+        identified is via its pending channel ID. As an example, this method can be
+        used to specify that we're expecting a funding flow for a particular
+        pending channel ID, for which we need to use specific parameters.
+        Alternatively, this can be used to interactively drive PSBT signing for
+        funding for partially complete funding transactions.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 24")
+        context.set_details('Method not 47!')
+        raise NotImplementedError('Method not 48!')
+
+    def ChannelAcceptor(self, request_iterator, context):
+        """
+        ChannelAcceptor dispatches a bi-directional streaming RPC in which
+        OpenChannel requests are sent to the client and the client responds with
+        a boolean that tells LND whether or not to accept the channel. This allows
+        node operators to specify their own criteria for accepting inbound channels
+        through a single persistent connection.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 25")
+        context.set_details('Method not 49!')
+        raise NotImplementedError('Method not 50!')
+
+    def CloseChannel(self, request, context):
+        """lncli: `closechannel`
+        CloseChannel attempts to close an active channel identified by its channel
+        outpoint (ChannelPoint). The actions of this method can additionally be
+        augmented to attempt a force close after a timeout period in the case of an
+        inactive peer. If a non-force close (cooperative closure) is requested,
+        then the user can specify either a target number of blocks until the
+        closure transaction is confirmed, or a manual fee rate. If neither are
+        specified, then a default lax, block confirmation target is used.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 26")
+        context.set_details('Method not 51!')
+        raise NotImplementedError('Method not 52!')
+
+    def AbandonChannel(self, request, context):
+        """lncli: `abandonchannel`
+        AbandonChannel removes all channel state from the database except for a
+        close summary. This method can be used to get rid of permanently unusable
+        channels due to bugs fixed in newer versions of lnd. This method can also be
+        used to remove externally funded channels where the funding transaction was
+        never broadcast. Only available for non-externally funded channels in dev
+        build.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 27")
+        context.set_details('Method not 53!')
+        raise NotImplementedError('Method not 54!')
+
+    def SendPayment(self, request_iterator, context):
+        """lncli: `sendpayment`
+        Deprecated, use routerrpc.SendPaymentV2. SendPayment dispatches a
+        bi-directional streaming RPC for sending payments through the Lightning
+        Network. A single RPC invocation creates a persistent bi-directional
+        stream allowing clients to rapidly send payments through the Lightning
+        Network with a single persistent connection.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 28")
+        context.set_details('Method not 55!')
+        raise NotImplementedError('Method not 56!')
+
+    def SendPaymentSync(self, request, context):
+        """
+        SendPaymentSync is the synchronous non-streaming version of SendPayment.
+        This RPC is intended to be consumed by clients of the REST proxy.
+        Additionally, this RPC expects the destination's public key and the payment
+        hash (if any) to be encoded as hex strings.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 29")
+        context.set_details('Method not 57!')
+        raise NotImplementedError('Method not 58!')
+
+    def SendToRoute(self, request_iterator, context):
+        """lncli: `sendtoroute`
+        Deprecated, use routerrpc.SendToRouteV2. SendToRoute is a bi-directional
+        streaming RPC for sending payment through the Lightning Network. This
+        method differs from SendPayment in that it allows users to specify a full
+        route manually. This can be used for things like rebalancing, and atomic
+        swaps.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 30")
+        context.set_details('Method not 59!')
+        raise NotImplementedError('Method not 60!')
+
+    def SendToRouteSync(self, request, context):
+        """
+        SendToRouteSync is a synchronous version of SendToRoute. It Will block
+        until the payment either fails or succeeds.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 31")
+        context.set_details('Method not 61!')
+        raise NotImplementedError('Method not 62!')
+
+    def AddInvoice(self, request, context):
+        """lncli: `addinvoice`
+        AddInvoice attempts to add a new invoice to the invoice database. Any
+        duplicated invoices are rejected, therefore all invoices *must* have a
+        unique payment preimage.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 32")
+        context.set_details('Method not 63!')
+        raise NotImplementedError('Method not 64!')
+
+    def ListInvoices(self, request, context):
+        """lncli: `listinvoices`
+        ListInvoices returns a list of all the invoices currently stored within the
+        database. Any active debug invoices are ignored. It has full support for
+        paginated responses, allowing users to query for specific invoices through
+        their add_index. This can be done by using either the first_index_offset or
+        last_index_offset fields included in the response as the index_offset of the
+        next request. By default, the first 100 invoices created will be returned.
+        Backwards pagination is also supported through the Reversed flag.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 33")
+        context.set_details('Method not 65!')
+        raise NotImplementedError('Method not 66!')
+
+    def LookupInvoice(self, request, context):
+        """lncli: `lookupinvoice`
+        LookupInvoice attempts to look up an invoice according to its payment hash.
+        The passed payment hash *must* be exactly 32 bytes, if not, an error is
+        returned.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 34")
+        context.set_details('Method not 67!')
+        raise NotImplementedError('Method not 68!')
+
+    def SubscribeInvoices(self, request, context):
+        """
+        SubscribeInvoices returns a uni-directional stream (server -> client) for
+        notifying the client of newly added/settled invoices. The caller can
+        optionally specify the add_index and/or the settle_index. If the add_index
+        is specified, then we'll first start by sending add invoice events for all
+        invoices with an add_index greater than the specified value. If the
+        settle_index is specified, the next, we'll send out all settle events for
+        invoices with a settle_index greater than the specified value. One or both
+        of these fields can be set. If no fields are set, then we'll only send out
+        the latest add/settle events.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("SubscribeInvoices 35")
+        context.set_details('Method not 69!')
+        raise NotImplementedError('Method not 70!')
+
+    def DecodePayReq(self, request, context):
+        """lncli: `decodepayreq`
+        DecodePayReq takes an encoded payment request string and attempts to decode
+        it, returning a full description of the conditions encoded within the
+        payment request.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 36")
+        context.set_details('Method not 71!')
+        raise NotImplementedError('Method not 72!')
+
+    def ListPayments(self, request, context):
+        """lncli: `listpayments`
+        ListPayments returns a list of all outgoing payments.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 37")
+        context.set_details('Method not 73!')
+        raise NotImplementedError('Method not 74!')
+
+    def DeleteAllPayments(self, request, context):
+        """
+        DeleteAllPayments deletes all outgoing payments from DB.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 38")
+        context.set_details('Method not 75!')
+        raise NotImplementedError('Method not 76!')
+
+    def DescribeGraph(self, request, context):
+        """lncli: `describegraph`
+        DescribeGraph returns a description of the latest graph state from the
+        point of view of the node. The graph information is partitioned into two
+        components: all the nodes/vertexes, and all the edges that connect the
+        vertexes themselves. As this is a directed graph, the edges also contain
+        the node directional specific routing policy which includes: the time lock
+        delta, fee information, etc.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 39")
+        context.set_details('Method not 77!')
+        raise NotImplementedError('Method not 78!')
+
+    def GetNodeMetrics(self, request, context):
+        """lncli: `getnodemetrics`
+        GetNodeMetrics returns node metrics calculated from the graph. Currently
+        the only supported metric is betweenness centrality of individual nodes.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 40")
+        context.set_details('Method not 79!')
+        raise NotImplementedError('Method not 80!')
+
+    def GetChanInfo(self, request, context):
+        """lncli: `getchaninfo`
+        GetChanInfo returns the latest authenticated network announcement for the
+        given channel identified by its channel ID: an 8-byte integer which
+        uniquely identifies the location of transaction's funding output within the
+        blockchain.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 41")
+        context.set_details('Method not 81!')
+        raise NotImplementedError('Method not 82!')
+
+    def GetNodeInfo(self, request, context):
+        """lncli: `getnodeinfo`
+        GetNodeInfo returns the latest advertised, aggregated, and authenticated
+        channel information for the specified node identified by its public key.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 42")
+        context.set_details('Method not 83!')
+        raise NotImplementedError('Method not 84!')
+
+    def QueryRoutes(self, request, context):
+        """lncli: `queryroutes`
+        QueryRoutes attempts to query the daemon's Channel Router for a possible
+        route to a target destination capable of carrying a specific amount of
+        satoshis. The returned route contains the full details required to craft and
+        send an HTLC, also including the necessary information that should be
+        present within the Sphinx packet encapsulated within the HTLC.
+
+        When using REST, the `dest_custom_records` map type can be set by appending
+        `&dest_custom_records[<record_number>]=<record_data_base64_url_encoded>`
+        to the URL. Unfortunately this map type doesn't appear in the REST API
+        documentation because of a bug in the grpc-gateway library.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 43")
+        context.set_details('Method not 85!')
+        raise NotImplementedError('Method not 86!')
+
+    def GetNetworkInfo(self, request, context):
+        """lncli: `getnetworkinfo`
+        GetNetworkInfo returns some basic stats about the known channel graph from
+        the point of view of the node.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 44")
+        context.set_details('Method not 87!')
+        raise NotImplementedError('Method not 88!')
+
+    def StopDaemon(self, request, context):
+        """lncli: `stop`
+        StopDaemon will send a shutdown request to the interrupt handler, triggering
+        a graceful shutdown of the daemon.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 45")
+        context.set_details('Method not 89!')
+        raise NotImplementedError('Method not 90!')
+
+    def SubscribeChannelGraph(self, request, context):
+        """
+        SubscribeChannelGraph launches a streaming RPC that allows the caller to
+        receive notifications upon any changes to the channel graph topology from
+        the point of view of the responding node. Events notified include: new
+        nodes coming online, nodes updating their authenticated attributes, new
+        channels being advertised, updates in the routing policy for a directional
+        channel edge, and when channels are closed on-chain.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 46")
+        context.set_details('Method not 91!')
+        raise NotImplementedError('Method not 92!')
+
+    def DebugLevel(self, request, context):
+        """lncli: `debuglevel`
+        DebugLevel allows a caller to programmatically set the logging verbosity of
+        lnd. The logging can be targeted according to a coarse daemon-wide logging
+        level, or in a granular fashion to specify the logging for a target
+        sub-system.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 47")
+        context.set_details('Method not 93!')
+        raise NotImplementedError('Method not 94!')
+
+    def FeeReport(self, request, context):
+        """lncli: `feereport`
+        FeeReport allows the caller to obtain a report detailing the current fee
+        schedule enforced by the node globally for each channel.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 48")
+        context.set_details('Method not 95!')
+        raise NotImplementedError('Method not 96!')
+
+    def UpdateChannelPolicy(self, request, context):
+        """lncli: `updatechanpolicy`
+        UpdateChannelPolicy allows the caller to update the fee schedule and
+        channel policies for all channels globally, or a particular channel.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 49")
+        context.set_details('Method not 97!')
+        raise NotImplementedError('Method not 98!')
+
+    def ForwardingHistory(self, request, context):
+        """lncli: `fwdinghistory`
+        ForwardingHistory allows the caller to query the htlcswitch for a record of
+        all HTLCs forwarded within the target time range, and integer offset
+        within that time range. If no time-range is specified, then the first chunk
+        of the past 24 hrs of forwarding history are returned.
+
+        A list of forwarding events are returned. The size of each forwarding event
+        is 40 bytes, and the max message size able to be returned in gRPC is 4 MiB.
+        As a result each message can only contain 50k entries. Each response has
+        the index offset of the last entry. The index offset can be provided to the
+        request to allow the caller to skip a series of records.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 50")
+        context.set_details('Method not 99!')
+        raise NotImplementedError('Method not 100!')
+
+    def ExportChannelBackup(self, request, context):
+        """lncli: `exportchanbackup`
+        ExportChannelBackup attempts to return an encrypted static channel backup
+        for the target channel identified by it channel point. The backup is
+        encrypted with a key generated from the aezeed seed of the user. The
+        returned backup can either be restored using the RestoreChannelBackup
+        method once lnd is running, or via the InitWallet and UnlockWallet methods
+        from the WalletUnlocker service.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 51")
+        context.set_details('Method not 101!')
+        raise NotImplementedError('Method not 102!')
+
+    def ExportAllChannelBackups(self, request, context):
+        """
+        ExportAllChannelBackups returns static channel backups for all existing
+        channels known to lnd. A set of regular singular static channel backups for
+        each channel are returned. Additionally, a multi-channel backup is returned
+        as well, which contains a single encrypted blob containing the backups of
+        each channel.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 52")
+        context.set_details('Method not 103!')
+        raise NotImplementedError('Method not 104!')
+
+    def VerifyChanBackup(self, request, context):
+        """
+        VerifyChanBackup allows a caller to verify the integrity of a channel backup
+        snapshot. This method will accept either a packed Single or a packed Multi.
+        Specifying both will result in an error.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 53")
+        context.set_details('Method not 105!')
+        raise NotImplementedError('Method not 106!')
+
+    def RestoreChannelBackups(self, request, context):
+        """lncli: `restorechanbackup`
+        RestoreChannelBackups accepts a set of singular channel backups, or a
+        single encrypted multi-chan backup and attempts to recover any funds
+        remaining within the channel. If we are able to unpack the backup, then the
+        new channel will be shown under listchannels, as well as pending channels.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 54")
+        context.set_details('Method not 107!')
+        raise NotImplementedError('Method not 108!')
+
+    def SubscribeChannelBackups(self, request, context):
+        """
+        SubscribeChannelBackups allows a client to sub-subscribe to the most up to
+        date information concerning the state of all channel backups. Each time a
+        new channel is added, we return the new set of channels, along with a
+        multi-chan backup containing the backup info for all channels. Each time a
+        channel is closed, we send a new update, which contains new new chan back
+        ups, but the updated set of encrypted multi-chan backups with the closed
+        channel(s) removed.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("SubscribeChannelBackups 55")
+        context.set_details('Method not 109!')
+        raise NotImplementedError('Method not 110!')
+
+    def BakeMacaroon(self, request, context):
+        """lncli: `bakemacaroon`
+        BakeMacaroon allows the creation of a new macaroon with custom read and
+        write permissions. No first-party caveats are added since this can be done
+        offline.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 56")
+        context.set_details('Method not 111!')
+        raise NotImplementedError('Method not 112!')
+
+    def ListMacaroonIDs(self, request, context):
+        """lncli: `listmacaroonids`
+        ListMacaroonIDs returns all root key IDs that are in use.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 57")
+        context.set_details('Method not 113!')
+        raise NotImplementedError('Method not 114!')
+
+    def DeleteMacaroonID(self, request, context):
+        """lncli: `deletemacaroonid`
+        DeleteMacaroonID deletes the specified macaroon ID and invalidates all
+        macaroons derived from that ID.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 58")
+        context.set_details('Method not 115!')
+        raise NotImplementedError('Method not 116!')
+
+    def ListPermissions(self, request, context):
+        """lncli: `listpermissions`
+        ListPermissions lists all RPC method URIs and their required macaroon
+        permissions to access them.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        print("XXXX 59")
+        context.set_details('Method not 117!')
+        raise NotImplementedError('Method not 118!')
